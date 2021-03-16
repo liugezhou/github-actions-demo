@@ -1,70 +1,28 @@
-# Getting Started with Create React App
+# Introduce
+> 本项目使用 create-react-app 脚手架创建，并添加.github/workflows/ci.yml文件，实现项目的 actions 操作。    
+>  并记录一些在学习 actions 中的笔记。
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Build
+> 项目代码搭建过程：    
+> + npm install -g create-react-app   
+> + create-react-app  github-actions-demo   
+> + cd create-react-app 
+> +  打开packages.json文件，加入homepage 字段：「"homepage": "https://[username].github.io/github-actions-demo"」   
+> + 在项目根目录下，生成一个 workflow 文件，.github/workflows/ci.yml    
 
-## Available Scripts
+> 以上过程还有 yml 文件的书写，secret 的设置等. 
+> 根据 [GitHub Actions 入门教程](http://www.ruanyifeng.com/blog/2019/09/getting-started-with-github-actions.html)
 
-In the project directory, you can run:
-
-### `yarn start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Note
+> 1. Github 把 抓取代码、运行测试、登录远程服务器、发布到第三方服务等操作称为 actions。
+> 2. 如果需要某个 action，不必自己写复杂的脚本，直接引用 他人写好的 action 即可，于是整个持续集成的过程，就变成了一个 actions 的组合。这些 actions 可以在仓库  [awesome actions](https://github.com/sdras/awesome-actions)中找到，或者在  [这里](https://github.com/marketplace?type=actions) 搜索。    
+> 3. 引用actions的时候比如：actions/setup-node ---这个就表示在 github.com/actions/setup-node 这个仓库，作用是安装 node。    
+> 4.  GitHub Actions有一些自己的术语：workflow、job、step、action   
+> 5. 配置文件 workflow，采用 YAML 格式，后缀名为.yml，一个库可以有多少 yml 文件，Github 在.github/workfows/下发现有.yml 文件，就会自动运行该文件。  
+> 6. workflow 文件的配置字段：  
+>  + name: workflow 的名称，若省略，则默认为当前 workflow 的文件名  
+> + on: on 字段指定触发 workflow 的条件，比如 on:push,表示 push 事件发生时触发 workflow，on 字段也可以是事件的数组  on: [ push, pull-request ]  
+> + branches: 指定触发事件时，可以限定分支或标签    比如 master  main。
+> + jobs：每个 jobs 下面可以有多个 job_id(既job的 name) 
+> + jobs.job_id.runs-on : jobs.<job_id>.runs-on ：该字段指定运行所需要的虚拟环境,这是必填字段，目前可用的虚拟机有 Ubuntu、window、macOS 
+> + jobs.job_id.steps: steps 字段指定每个 Job 的运行步骤，可包含一个或者多个，每个步骤可以指定以下三个字段：name、run、env
